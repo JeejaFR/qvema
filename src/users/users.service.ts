@@ -19,6 +19,8 @@ export class UsersService {
     const user = this.userRepository.create({
       firstName: createUserDto.firstName,
       lastName: createUserDto.lastName,
+      email: createUserDto.email,
+      password: createUserDto.password,
       role: createUserDto.role || UserRole.ENTREPRENEUR,
     });
     if (createUserDto.interestIds) {
@@ -40,6 +42,10 @@ export class UsersService {
     });
   }
 
+  async findByEmail(email: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { email }, relations: ['interests', 'projects', 'investments'] });
+  }
+
   async update(id: number, updateUserDto: UpdateUserDto): Promise<User | null> {
     const user = await this.findOne(id);
     if (user) {
@@ -57,4 +63,5 @@ export class UsersService {
   async remove(id: number): Promise<void> {
     await this.userRepository.delete(id);
   }
+  
 }

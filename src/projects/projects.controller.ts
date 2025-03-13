@@ -1,9 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
+import { ProjectOwnerGuard } from 'src/auth/project-owner.guard';
 
 @Controller('projects')
+@UseGuards(AuthGuard)
 export class ProjectsController {
   constructor(private readonly projectsService: ProjectsService) {}
 
@@ -23,11 +26,13 @@ export class ProjectsController {
   }
 
   @Patch(':id')
+  @UseGuards(ProjectOwnerGuard)
   update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
     return this.projectsService.update(+id, updateProjectDto);
   }
 
   @Delete(':id')
+  @UseGuards(ProjectOwnerGuard)
   remove(@Param('id') id: string) {
     return this.projectsService.remove(+id);
   }

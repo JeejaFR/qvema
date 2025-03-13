@@ -36,20 +36,41 @@ export class FixturesService {
       { name: 'Sport' },
     ]);
 
-    // Utilisateurs
+    // 2. Utilisateurs avec email et password (obligatoire pour éviter l'erreur)
     const users = await this.userRepository.save([
-      { firstName: 'Jean', lastName: 'Dupont', role: UserRole.ENTREPRENEUR, interests: [interests[0], interests[2]] },
-      { firstName: 'Marie', lastName: 'Curie', role: UserRole.INVESTISSEUR, interests: [interests[1]] },
-      { firstName: 'Paul', lastName: 'Martin', role: UserRole.ADMIN, interests: [interests[3]] },
+      {
+        firstName: 'Jean',
+        lastName: 'Dupont',
+        email: 'jean.dupont@example.com',
+        password: 'password123',
+        role: UserRole.ENTREPRENEUR,
+        interests: [interests[0], interests[2]],
+      },
+      {
+        firstName: 'Marie',
+        lastName: 'Curie',
+        email: 'marie.curie@example.com',
+        password: 'password123',
+        role: UserRole.INVESTISSEUR,
+        interests: [interests[1]],
+      },
+      {
+        firstName: 'Paul',
+        lastName: 'Martin',
+        email: 'paul.martin@example.com',
+        password: 'password123',
+        role: UserRole.ADMIN,
+        interests: [interests[3]],
+      },
     ]);
 
-    // Projets
+    // 3. Projets
     const projects = await this.projectRepository.save([
       { title: 'Application Mobile', user: users[0] },
       { title: 'Site Web', user: users[0] },
     ]);
 
-    // Investissements
+    // 4. Investissements
     await this.investmentRepository.save([
       { amount: 5000, date: new Date('2025-03-01'), investor: users[1], project: projects[0] },
       { amount: 3000, date: new Date('2025-03-02'), investor: users[1], project: projects[1] },

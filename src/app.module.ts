@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { InterestsModule } from './interests/interests.module';
 import { ProjectsModule } from './projects/projects.module';
-import { FixturesService } from './fixtures/fixtures.service';
 import { InvestmentsModule } from './investments/investments.module';
+import { AuthModule } from './auth/auth.module';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
+import { UsersService } from './users/users.service';
+import { JwtStrategy } from './auth/jwt.strategy';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './auth/auth.guard';
 
 @Module({
   imports: [
@@ -24,7 +28,13 @@ import { InvestmentsModule } from './investments/investments.module';
     InterestsModule,
     ProjectsModule,
     InvestmentsModule,
+    AuthModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
   ],
 })
-
 export class AppModule {}

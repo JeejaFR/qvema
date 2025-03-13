@@ -5,13 +5,18 @@ import { UsersController } from './users.controller';
 import { User } from './entities/user.entity';
 import { Interest } from '../interests/entities/interest.entity';
 import { Project } from '../projects/entities/project.entity';
+import { Investment } from '../investments/entities/investment.entity';
 import { FixturesService } from '../fixtures/fixtures.service';
-import { Investment } from 'src/investments/entities/investment.entity';
+import { UserOwnerGuard } from '../auth/user-owner.guard';
+import { AuthGuard } from '../auth/auth.guard';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Interest, Project, Investment])],
+  imports: [
+    TypeOrmModule.forFeature([User, Interest, Project, Investment]),
+  ],
   controllers: [UsersController],
-  providers: [UsersService, FixturesService],
+  providers: [UsersService, FixturesService, UserOwnerGuard, AuthGuard],
+  exports: [UsersService],
 })
 export class UsersModule {
   constructor(private readonly fixturesService: FixturesService) {
